@@ -1,6 +1,6 @@
 :root{
   --max-width: 1000px;
-  --space: 18px;
+  --space: 24px;
   --radius: 10px;
   --transition: 200ms ease;
   --color-bg: #ffb6c1; /* user requested background */
@@ -16,26 +16,18 @@
   color-scheme: light;
 }
 
-/* dark theme */
-:root[data-theme="dark"]{
-  --color-bg: #271b20; /* dark variant that works with pink accent */
-  --color-panel: #071324;
-  --color-text: #e6eef8;
-  --muted: #9aa4b2;
-  --accent: #ffd6ea; /* softer accent in dark */
-  --card-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  color-scheme: dark;
-}
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   background: var(--color-bg); /* solid pink background */
   color:var(--color-text);
-  line-height:1.5;
+  line-height:1.75;
   font-size:16px;
 }
+
+/* smooth in-page scrolling */
+html{scroll-behavior:smooth}
 
 /* Layout */
 .container{
@@ -52,10 +44,6 @@ body{
   backdrop-filter: blur(6px);
   background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.5));
   border-bottom: 1px solid rgba(0,0,0,0.04);
-}
-:root[data-theme="dark"] .site-header{
-  background: linear-gradient(180deg, rgba(8,12,20,0.75), rgba(8,12,20,0.5));
-  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .header-inner{
   display:flex;
@@ -81,121 +69,110 @@ body{
 }
 
 /* Controls */
-.controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.theme-toggle{
+/* Mobile nav toggle */
+.mobile-toggle{
   background:transparent;
-  border:1px solid rgba(0,0,0,0.06);
-  padding:6px 8px;
-  border-radius:8px;
+  border:0;
+  font-size:20px;
+  padding:8px 10px;
+  display:inline-block;
   cursor:pointer;
-  transition: transform 220ms var(--transition), box-shadow 200ms ease;
-}
-.theme-toggle:focus{
-  outline:none;
-  box-shadow:var(--focus);
 }
 
 /* Resume link (commented by default) */
 .resume-link{margin-right:8px;text-decoration:none;color:var(--accent);font-weight:600}
 
-/* Nav / tabs */
-.main-nav{margin-top:8px}
-.tabs{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.tab{
-  appearance:none;
-  border:0;
-  background:transparent;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-  color:var(--muted);
-  transition:color var(--transition), transform 160ms ease;
-  font-weight:600;
-  position:relative;
-}
-.tab[aria-selected="true"], .tab:hover{
-  color:var(--accent);
-  background:transparent;
-}
-.tab:focus{
-  outline:none;
-  box-shadow:var(--focus);
-}
+/* Main nav (anchor links) */
+.main-nav{margin-top:0}
+.nav-list{display:flex;gap:12px;align-items:center;list-style:none;margin:0;padding:0}
+.nav-link{display:inline-block;padding:8px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:600}
+.nav-link:hover{color:var(--accent)}
+.nav-link.active{color:var(--accent);position:relative}
+.nav-link.active::after{content:"";position:absolute;left:10%;right:10%;bottom:-10px;height:3px;background:linear-gradient(90deg,var(--accent), #7cc3ff);border-radius:3px}
 
-/* Pulse micro-interaction when switching tabs */
-.tab.pulse{
-  animation: tabPulse 360ms ease;
-}
-@keyframes tabPulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-  100%{transform:scale(1);}
-}
-
-/* Active underline */
-.tab[aria-selected="true"]{
-  position:relative;
-}
-.tab[aria-selected="true"]::after{
-  content:"";
-  position:absolute;
-  left:10%;
-  right:10%;
-  bottom:-10px;
-  height:3px;
-  background:linear-gradient(90deg,var(--accent), #7cc3ff);
-  border-radius:3px;
-}
+/* Mobile nav open state */
+.site-header .main-nav{display:none}
+.site-header.nav-open .main-nav{display:block}
+.site-header .nav-list{flex-direction:column;gap:6px}
 
 /* Panels and cards */
-.panel{padding:var(--space) 0}
+.panel{padding:calc(var(--space) * 1.2) 0}
 .hidden{display:none}
 
 .card{
-  background:var(--color-panel);
+  /* Structural card styles only. Visual glass styles live in .glass-panel */
   box-shadow:var(--card-shadow);
   border-radius:var(--radius);
   padding:var(--space);
   margin-bottom:var(--space);
+  color:var(--color-text);
+}
+
+/* Reusable glass panel matching the navbar's translucency */
+.glass-panel{
+  /* Lower opacity glass matching navbar but more translucent */
+  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius:var(--radius);
+}
+
+/* Fallback for browsers without backdrop-filter support: still translucent */
+@supports not ((-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px))) {
+  .glass-panel{
+    background: rgba(255,255,255,0.78);
+  }
 }
 .hero{
   display:grid;
-  gap:12px;
+  gap:18px;
   text-align:center;
+  grid-template-columns:1fr;
 }
 .hero-name{
   margin:0;
-  font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+  font-size: clamp(1.6rem, 3.8vw, 2.6rem);
 }
 .hero-tagline{margin:0;color:var(--muted)}
-.quick-links{
-  margin:0;
+.quick-links{display:none}
+
+/* Hero-specific styling: frosted text box + profile image */
+.hero.card{
+  display:grid;
+  align-items:center;
+  grid-template-columns:1fr;
+  gap:18px;
+  background: transparent; /* let inner content show translucent panel */
+  box-shadow:none;
   padding:0;
-  list-style:none;
-  display:flex;
-  gap:12px;
-  justify-content:center;
 }
-.quick-links a{color:var(--accent); text-decoration:none; font-weight:600}
+.hero-content{
+  /* Use the shared glass-panel styles for background/blur; keep inner spacing and shadow */
+  padding: calc(var(--space) * 0.9);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15,15,15,0.06);
+  color: var(--color-text);
+}
+.hero-photo{
+  width:100%;
+  max-width:150px;
+  height:auto;
+  border-radius:50%;
+  box-shadow: 0 8px 22px rgba(15,15,15,0.12);
+  justify-self:center;
+  display:block;
+  margin:0 auto;
+}
 
 /* Content */
 .about p{margin:0}
 .education-details, .coursework{margin:8px 0 0 18px}
 .role-card{border-left:3px solid rgba(0,0,0,0.06); padding-left:12px; margin-bottom:12px}
-:root[data-theme="dark"] .role-card{border-left-color: rgba(255,255,255,0.04)}
+.role-card{border-left-color: rgba(0,0,0,0.06)}
 .meta{color:var(--muted); margin:6px 0 8px}
 
 /* Contact form */
-.contact-form{display:grid; gap:10px; margin-top:12px}
+.contact-form{display:grid; gap:12px; margin-top:12px}
 .contact-form input, .contact-form textarea{
   padding:10px;
   border-radius:8px;
@@ -255,8 +232,11 @@ body{
   .brand{flex-direction:row; align-items:center}
   .main-nav{margin-top:0}
   .tabs{gap:12px}
-  .hero{grid-template-columns:1fr 1fr; align-items:center; text-align:left}
+  .hero{grid-template-columns:1fr auto; align-items:center; text-align:left}
   .hero .quick-links{justify-self:start}
+  .hero.card{background:transparent;padding:0}
+  .hero-content{padding:calc(var(--space) * 1.1)}
+  .hero-photo{max-width:200px;justify-self:center;margin:0;align-self:center}
 }
 
 /* Focus-visible enhancement */

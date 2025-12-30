@@ -1,90 +1,50 @@
 // Accessible tabs, keyboard navigation, dark-mode persistence, contact form handling
 // + micro-interactions: tab pulse and button ripple (no frameworks)
+// Single-page behavior: smooth anchors, mobile nav, active nav highlighting, contact form handling, ripple + toast
 (function () {
-  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
-  const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
-  const tablist = document.getElementById('tabs');
-  const themeToggle = document.getElementById('theme-toggle');
   const yearEl = document.getElementById('year');
   const form = document.getElementById('contact-form');
   const feedback = document.getElementById('form-feedback');
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+  const sections = navLinks.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const header = document.querySelector('.site-header');
 
-  // Initialize year
-  yearEl.textContent = new Date().getFullYear();
+  // Initialize year if element exists (kept for compatibility)
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // TAB HANDLING
-  function activateTab(tab, setFocus = true, pulse = true) {
-    tabs.forEach(t => {
-      const selected = t === tab;
-      t.setAttribute('aria-selected', selected ? 'true' : 'false');
-      t.tabIndex = selected ? 0 : -1;
+  // Mobile nav toggle
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      const open = header.classList.toggle('nav-open');
+      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-
-    panels.forEach(p => {
-      p.classList.toggle('hidden', p.id !== tab.getAttribute('aria-controls'));
-    });
-
-    if (pulse) {
-      tab.classList.add('pulse');
-      setTimeout(() => tab.classList.remove('pulse'), 360);
-    }
-
-    if (setFocus) {
-      tab.focus();
-      document.getElementById('main').focus();
-    }
   }
 
-  // Click to activate
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => activateTab(tab, true, true));
-    tab.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const dir = e.key === 'ArrowRight' ? 1 : -1;
-        const nextIndex = (i + dir + tabs.length) % tabs.length;
-        activateTab(tabs[nextIndex], true, true);
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        activateTab(tab, true, true);
-      }
+  // Close mobile nav when clicking a link
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      header.classList.remove('nav-open');
+      if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'false');
     });
   });
 
-  // Start with Home active (first tab) by default
-  const initialTab = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
-  activateTab(initialTab, false, false);
+  // IntersectionObserver to highlight active nav link
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const link = document.querySelector(`.nav-link[href="#${id}"]`);
+      if (link) link.classList.toggle('active', entry.isIntersecting);
+    });
+  }, { root: null, rootMargin: '0px 0px -60% 0px', threshold: 0 });
 
-  // THEME TOGGLE
-  function applyTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeToggle.textContent = '☀️';
-      themeToggle.setAttribute('aria-pressed', 'true');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      themeToggle.textContent = '🌙';
-      themeToggle.setAttribute('aria-pressed', 'false');
-    }
-    // gentle rotate micro-interaction
-    themeToggle.style.transform = 'rotate(20deg) scale(1.05)';
-    setTimeout(() => themeToggle.style.transform = '', 260);
-  }
+  sections.forEach(s => observer.observe(s));
 
-  // Load persisted theme or system preference
-  const stored = localStorage.getItem('theme');
-  if (stored) {
-    applyTheme(stored);
-  } else {
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(prefersDark ? 'dark' : 'light');
-  }
-
-  themeToggle.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    applyTheme(next);
-    localStorage.setItem('theme', next);
+  // CTA button scroll to experience
+  const cta = document.getElementById('cta-experience');
+  if (cta) cta.addEventListener('click', () => {
+    const target = document.getElementById('experience');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   // BUTTON RIPPLE micro-interaction
@@ -101,17 +61,17 @@
     setTimeout(() => ripple.remove(), 650);
   }
 
-  // CONTACT FORM — client-side only + ripple + toast
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    showToast('Thanks! Please email me directly.');
-    feedback.textContent = "Thanks! Please email me directly.";
-    form.reset();
-  });
+  document.querySelectorAll('.btn').forEach(b => b.addEventListener('click', addRipple));
 
-  document.querySelectorAll('.btn').forEach(b => {
-    b.addEventListener('click', addRipple);
-  });
+  // CONTACT FORM — client-side only + toast
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Thanks! Please email me directly.');
+      if (feedback) feedback.textContent = 'Thanks! Please email me directly.';
+      form.reset();
+    });
+  }
 
   function showToast(msg) {
     let t = document.querySelector('.toast');
@@ -124,18 +84,5 @@
     requestAnimationFrame(() => t.classList.add('show'));
     setTimeout(() => t.classList.remove('show'), 2600);
   }
-
-  // Basic accessibility: ensure tablist arrow keys also work when focus is on the container
-  tablist.addEventListener('keydown', (e) => {
-    const active = document.activeElement;
-    const idx = tabs.indexOf(active);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      const dir = e.key === 'ArrowRight' ? 1 : -1;
-      const nextIndex = (idx + dir + tabs.length) % tabs.length;
-      tabs[nextIndex].focus();
-      activateTab(tabs[nextIndex], false, true);
-    }
-  });
 
 })();
