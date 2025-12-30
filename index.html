@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Avni Thapa — Portfolio</title>
+  <meta name="description" content="Avni Thapa — Economics student and research assistant based in Atlanta, GA." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="#" class="brand-link">Avni Thapa</a>
+        <span class="location">Atlanta, GA</span>
+      </div>
+
+      <div class="controls">
+        <!-- Commented-out resume link; upload assets/avni_resume.pdf and uncomment to enable download -->
+        <!-- <a href="assets/avni_resume.pdf" class="resume-link" download>Download Resume (PDF)</a> -->
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle dark mode">🌙</button>
+      </div>
+
+      <nav class="main-nav" aria-label="Primary" role="navigation">
+        <div role="tablist" aria-label="Main sections" class="tabs" id="tabs">
+          <button id="tab-home" class="tab" role="tab" aria-selected="true" aria-controls="panel-home" tabindex="0">Home</button>
+          <button id="tab-education" class="tab" role="tab" aria-selected="false" aria-controls="panel-education" tabindex="-1">Education</button>
+          <button id="tab-experience" class="tab" role="tab" aria-selected="false" aria-controls="panel-experience" tabindex="-1">Experience</button>
+          <button id="tab-contact" class="tab" role="tab" aria-selected="false" aria-controls="panel-contact" tabindex="-1">Contact</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="main" tabindex="-1">
+    <!-- HOME -->
+    <section id="panel-home" class="panel" role="tabpanel" aria-labelledby="tab-home">
+      <section class="hero card">
+        <h1 class="hero-name">Avni Thapa</h1>
+        <p class="hero-tagline">Economics student and quantitative researcher using data to inform policy and analysis.</p>
+
+        <ul class="quick-links" aria-label="Quick links">
+          <li><a href="mailto:athapa5@gsu.edu">athapa5@gsu.edu</a></li>
+          <li><a href="https://avniii.tech" target="_blank" rel="noopener">avniii.tech</a></li>
+          <li><a href="https://github.com/avnis6" target="_blank" rel="noopener">github/avnis6</a></li>
+        </ul>
+      </section>
+
+      <section class="about card">
+        <h2>About</h2>
+        <p>I'm an undergraduate economics student at Georgia State University with a strong interest in quantitative research and statistical modeling. Based in Atlanta, I work on empirical projects that combine rigorous data analysis with meaningful policy and research questions. I enjoy collaborating with faculty and peers to develop insights from complex datasets and to communicate findings clearly. Outside research, I support student learning through tutoring and teaching assistance.</p>
+      </section>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="panel-education" class="panel hidden" role="tabpanel" aria-labelledby="tab-education">
+      <section class="card">
+        <h2>Education</h2>
+        <p><strong>Georgia State University</strong> — BS in Economics (Expected May 2028)</p>
+        <ul class="education-details">
+          <li>GPA: 4.0; President List (Spring 2025); Honors College</li>
+        </ul>
+
+        <h3>Relevant Coursework</h3>
+        <ul class="coursework">
+          <li>Microeconomics</li>
+          <li>Macroeconomics</li>
+          <li>Mathematical Economics</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="panel-experience" class="panel hidden" role="tabpanel" aria-labelledby="tab-experience">
+      <section class="card">
+        <h2>Work Experience</h2>
+
+        <article class="role-card">
+          <h3>Research Assistant, Mathematics Department — Georgia State University</h3>
+          <p class="meta">Atlanta, GA — Sept 2025 to Present</p>
+          <ul>
+            <li>Engaged in quantitative research under Dr. Li-Hsiang Lin, applying statistical learning techniques for empirical data analysis.</li>
+            <li>Exploring supervised and unsupervised learning models to analyze complex datasets and interpret predictive performance.</li>
+          </ul>
+        </article>
+
+        <article class="role-card">
+          <h3>Undergraduate Teaching Assistant, MILE lab — Georgia State University</h3>
+          <p class="meta">Dec 2025 to Present</p>
+          <ul>
+            <li>Provided one-on-one and small-group academic support to improve student understanding and performance.</li>
+            <li>Supported instruction for College Algebra by assisting students with problem-solving, homework, and exam preparation during lab and office hours.</li>
+          </ul>
+        </article>
+
+        <article class="role-card">
+          <h3>Research Fellow, Student Research Council — Nepal</h3>
+          <p class="meta">Kathmandu, Nepal — June 2023 to Aug 2023</p>
+          <ul>
+            <li>Conducted a 12-week research project on immigration trends in Nepal.</li>
+            <li>Collected and analyzed survey and interview data, and presented findings with well-organized documentation.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="card leadership">
+        <h2>Leadership Experience</h2>
+
+        <article class="role-card">
+          <h3>Marketing Director, Economics Club — Georgia State University</h3>
+          <p class="meta">Aug 2024 to Present</p>
+          <ul>
+            <li>Supervise two team members to maintain cohesive branding and communications.</li>
+            <li>Manage event logistics including promotional materials and outreach activities.</li>
+          </ul>
+        </article>
+
+        <article class="role-card">
+          <h3>Senator, Student Government Association — Georgia State University</h3>
+          <p class="meta">Nov 2024 to Present</p>
+          <ul>
+            <li>Researched student issues and drafted reports, proposals, and presentations for SGA meetings.</li>
+            <li>Collaborated to draft and review campus policy proposals with peers and leadership.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="card">
+        <h3>Skills</h3>
+        <ul class="skills-list">
+          <li><strong>Programming:</strong> R, Python</li>
+          <li><strong>Tools & Software:</strong> LaTeX, Git, Excel (Advanced)</li>
+          <li><strong>Data Analysis:</strong> Statistical modeling, data cleaning, visualization</li>
+          <li><strong>Other:</strong> Research writing, public speaking, project coordination</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="panel-contact" class="panel hidden" role="tabpanel" aria-labelledby="tab-contact">
+      <section class="card contact-card">
+        <h2>Contact</h2>
+
+        <dl>
+          <dt>Email</dt>
+          <dd><a href="mailto:athapa5@gsu.edu">athapa5@gsu.edu</a></dd>
+
+          <dt>Phone</dt>
+          <dd><a href="tel:+14133284912">(413) 328-4912</a></dd>
+
+          <dt>Website</dt>
+          <dd><a href="https://avniii.tech" target="_blank" rel="noopener">avniii.tech</a></dd>
+
+          <dt>GitHub</dt>
+          <dd><a href="https://github.com/avnis6" target="_blank" rel="noopener">github/avnis6</a></dd>
+        </dl>
+
+        <form id="contact-form" class="contact-form" novalidate>
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Brief message" required></textarea>
+
+          <button type="submit" class="btn">Send</button>
+
+          <div id="form-feedback" class="form-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Avni Thapa — Atlanta, GA</small>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

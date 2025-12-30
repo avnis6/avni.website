@@ -1,0 +1,278 @@
+:root{
+  --max-width: 1000px;
+  --space: 18px;
+  --radius: 10px;
+  --transition: 200ms ease;
+  --color-bg: #ffb6c1; /* user requested background */
+  --color-panel: #ffffff;
+  --color-text: #111827;
+  --muted: #6b7280;
+  --accent: #0f6efd;
+  --card-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
+  --focus: 0 0 0 3px rgba(15,110,253,0.12);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  color-scheme: light;
+}
+
+/* dark theme */
+:root[data-theme="dark"]{
+  --color-bg: #271b20; /* dark variant that works with pink accent */
+  --color-panel: #071324;
+  --color-text: #e6eef8;
+  --muted: #9aa4b2;
+  --accent: #ffd6ea; /* softer accent in dark */
+  --card-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background: var(--color-bg); /* solid pink background */
+  color:var(--color-text);
+  line-height:1.5;
+  font-size:16px;
+}
+
+/* Layout */
+.container{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:var(--space);
+}
+
+/* Header */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:40;
+  backdrop-filter: blur(6px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.5));
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+:root[data-theme="dark"] .site-header{
+  background: linear-gradient(180deg, rgba(8,12,20,0.75), rgba(8,12,20,0.5));
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:space-between;
+}
+
+/* Brand */
+.brand{
+  display:flex;
+  gap:12px;
+  flex-direction:column;
+}
+.brand-link{
+  font-weight:700;
+  color:var(--color-text);
+  text-decoration:none;
+}
+.location{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* Controls */
+.controls{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.theme-toggle{
+  background:transparent;
+  border:1px solid rgba(0,0,0,0.06);
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: transform 220ms var(--transition), box-shadow 200ms ease;
+}
+.theme-toggle:focus{
+  outline:none;
+  box-shadow:var(--focus);
+}
+
+/* Resume link (commented by default) */
+.resume-link{margin-right:8px;text-decoration:none;color:var(--accent);font-weight:600}
+
+/* Nav / tabs */
+.main-nav{margin-top:8px}
+.tabs{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.tab{
+  appearance:none;
+  border:0;
+  background:transparent;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--muted);
+  transition:color var(--transition), transform 160ms ease;
+  font-weight:600;
+  position:relative;
+}
+.tab[aria-selected="true"], .tab:hover{
+  color:var(--accent);
+  background:transparent;
+}
+.tab:focus{
+  outline:none;
+  box-shadow:var(--focus);
+}
+
+/* Pulse micro-interaction when switching tabs */
+.tab.pulse{
+  animation: tabPulse 360ms ease;
+}
+@keyframes tabPulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+  100%{transform:scale(1);}
+}
+
+/* Active underline */
+.tab[aria-selected="true"]{
+  position:relative;
+}
+.tab[aria-selected="true"]::after{
+  content:"";
+  position:absolute;
+  left:10%;
+  right:10%;
+  bottom:-10px;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent), #7cc3ff);
+  border-radius:3px;
+}
+
+/* Panels and cards */
+.panel{padding:var(--space) 0}
+.hidden{display:none}
+
+.card{
+  background:var(--color-panel);
+  box-shadow:var(--card-shadow);
+  border-radius:var(--radius);
+  padding:var(--space);
+  margin-bottom:var(--space);
+}
+.hero{
+  display:grid;
+  gap:12px;
+  text-align:center;
+}
+.hero-name{
+  margin:0;
+  font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+}
+.hero-tagline{margin:0;color:var(--muted)}
+.quick-links{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+.quick-links a{color:var(--accent); text-decoration:none; font-weight:600}
+
+/* Content */
+.about p{margin:0}
+.education-details, .coursework{margin:8px 0 0 18px}
+.role-card{border-left:3px solid rgba(0,0,0,0.06); padding-left:12px; margin-bottom:12px}
+:root[data-theme="dark"] .role-card{border-left-color: rgba(255,255,255,0.04)}
+.meta{color:var(--muted); margin:6px 0 8px}
+
+/* Contact form */
+.contact-form{display:grid; gap:10px; margin-top:12px}
+.contact-form input, .contact-form textarea{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:transparent;
+  color:var(--color-text);
+}
+.contact-form input:focus, .contact-form textarea:focus{outline:none;box-shadow:var(--focus)}
+.btn{
+  background:var(--accent);
+  color:white;
+  border:0;
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  width:max-content;
+  position:relative;
+  overflow:hidden; /* for ripple */
+}
+.form-feedback{margin-top:10px;color:var(--muted)}
+
+/* Ripple */
+.btn .ripple{
+  position:absolute;
+  border-radius:50%;
+  transform:scale(0);
+  background: rgba(255,255,255,0.6);
+  animation: ripple 600ms linear;
+}
+@keyframes ripple{
+  to{transform:scale(4);opacity:0}
+}
+
+/* Toast feedback */
+.toast{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  background:var(--color-panel);
+  box-shadow:var(--card-shadow);
+  padding:10px 14px;
+  border-radius:12px;
+  color:var(--color-text);
+  opacity:0;
+  transform:translateY(8px);
+  transition:transform 220ms ease, opacity 220ms ease;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* Footer */
+.site-footer{padding:20px 0;color:var(--muted)}
+.site-footer small{display:block;text-align:center}
+
+/* Responsive */
+@media (min-width:720px){
+  .header-inner{align-items:flex-end}
+  .brand{flex-direction:row; align-items:center}
+  .main-nav{margin-top:0}
+  .tabs{gap:12px}
+  .hero{grid-template-columns:1fr 1fr; align-items:center; text-align:left}
+  .hero .quick-links{justify-self:start}
+}
+
+/* Focus-visible enhancement */
+:focus:not(:focus-visible){
+  box-shadow:none;
+}
+
+/* Print styles: minimal; useful when printing from browser */
+@media print{
+  body{background: white; color: black}
+  .site-header, .site-footer, .tabs, .controls{display:none}
+  .container{padding:0}
+  .card{box-shadow:none;border-radius:0;padding:0}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important}
+}
